@@ -1,0 +1,13 @@
+version: "3" # docker-composeで扱うバージョン バージョンごとに書き方が変わる
+services:
+  app:
+    container_name: "DeepMetricLearning" # コンテナの名前指定
+    build:
+      context: .
+      dockerfile: ./Dockerfile 
+    image: deep_metric_learning # 使用するDockerイメージ名
+    volumes: # Bind mount するディレクトリ。volume。docker run コマンドの-v/--volume に相当 ホストとコンテナ内のファイル共有の指定
+        - $PWD:/home/DeepMetricLearning
+    tty: true # docker-compose up でコンテナを起動させた際に、コンテナがすぐに終了してしまうのを防ぐことができる
+    ports: # Exposeするポート。
+      - "127.0.0.1:9090:9090"
