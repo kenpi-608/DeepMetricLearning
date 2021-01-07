@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from sklearn.metrics import confusion_matrix
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score
 
 
 def create_classification_dataset(loader, model, device):
@@ -26,7 +26,7 @@ def create_classification_dataset(loader, model, device):
 def plot_confusion_matrix(pred, y):
     plt.figure(figsize=(10, 5))
     # conf_mat = confusion_matrix(y, model.predict(x), normalize='pred')
-    sns.heatmap(confusion_matrix(y, pred, normalize='true'), annot=True, cmap='Blues', fmt='.2g')
+    sns.heatmap(confusion_matrix(y, pred), annot=True, cmap='Blues', fmt='g')
     plt.show()
 
 
@@ -37,6 +37,8 @@ def lr(train_x, train_y, test_x, test_y):
     clf = LogisticRegression(random_state=0).fit(train_x, train_y)
     print("train acc: ", accuracy_score(train_y, clf.predict(train_x)))
     print("valid acc: ", accuracy_score(test_y, clf.predict(test_x)))
+    print("macro mean precision: ", precision_score(test_y, clf.predict(test_x), average='macro'))
+    print("macro mean recall: ", recall_score(test_y, clf.predict(test_x), average='macro'))
     plot_confusion_matrix(test_y, clf.predict(test_x))
     return clf
 
@@ -56,6 +58,8 @@ def lightgbm(train_x, train_y, test_x, test_y):
                     num_boost_round=50, verbose_eval=False)
     print("train acc: ", accuracy_score(train_y, create_lgb_pred(gbm, train_x)))
     print("valid acc: ", accuracy_score(test_y, create_lgb_pred(gbm, test_x)))
+    print("macro mean precision: ", precision_score(test_y, create_lgb_pred(gbm, test_x), average='macro'))
+    print("macro mean recall: ", recall_score(test_y, create_lgb_pred(gbm, test_x), average='macro'))
     plot_confusion_matrix(test_y, create_lgb_pred(gbm, test_x))
     return gbm
 

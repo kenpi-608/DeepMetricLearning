@@ -20,7 +20,8 @@ class Model(nn.Module):
         )
 
     def forward(self, input: Tensor) -> Tensor:
-        feature = self.feature_extractor(input).mean(dim=[2, 3])
+        # feature = self.feature_extractor(input).mean(dim=[2, 3])
+        feature = self.feature_extractor(input).view(-1, 32)
         return nn.functional.normalize(feature)
 
 
