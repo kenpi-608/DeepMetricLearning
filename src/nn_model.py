@@ -24,7 +24,7 @@ class Model(nn.Module):
         feature = self.feature_extractor(input).view(-1, 32)
         return nn.functional.normalize(feature)
 
-
+# for circle loss
 def train(model, criterion, optimizer, epoch, loader, device):
     print("Training... Epoch = %d" % epoch)
     for img, label in tqdm(loader):
